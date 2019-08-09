@@ -1,13 +1,13 @@
 <div class="header">
-  <div class="logo">
+  <a routerLink="/" class="logo">
     <img src="/assets/logo.png" alt="Omni Gallery" srcset="/assets/logo@2x.png 2x">
     <h1><span>Omni</span>Gallery</h1>
-  </div>
+  </a>
   <nav>
     <ul>
-      <li><a href="#">About</a></li>
-      <li class="active"><a href="#">Omnifocus Themes</a></li>
-      <li class="link-button"><a href="">Log In</a></li>
+      <li><a routerLink="/about" routerLinkActive="active" href="#">About</a></li>
+      <li><a routerLink="/" routerLinkActive="active" href="#">Omnifocus Themes</a></li>
+      <li class="link-button"><a routerLink="/login" href="">Log In</a></li>
     </ul>
   </nav>
 </div>
