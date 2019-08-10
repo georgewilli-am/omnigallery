@@ -50,11 +50,13 @@ nav {
   align-items: center;
 
   .link-button {
+    cursor: pointer;
+    border-radius: 3px;
     border: 2px solid #bb32a0;
     padding: 8px 16px;
-    margin-left: 35px;
     transition: background-color .25s ease, color .25s ease;
 
+    &.active,
     &:hover {
       color: #fff;
       background-color: #bb32a0;
@@ -63,6 +65,7 @@ nav {
     a:hover::after {
       content: unset;
     }
+
   }
 
   a:hover,

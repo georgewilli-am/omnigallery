@@ -1,0 +1,10 @@
+<div class="profile-header">
+  <h2><a routerLink="/profile" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}">{{username | async}}</a></h2>
+  <div class="profile-buttons">
+    <a routerLink="settings" routerLinkActive="active">Settings</a>
+    <a (click)="logout()">Log Out</a>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

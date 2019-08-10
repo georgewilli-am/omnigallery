@@ -131,7 +131,7 @@ export class AuthService {
       // Call method to log out
       client.logout({
         client_id: 'onFqoZuBa2YHY2DQD21CLuIigCXGX2s5',
-        returnTo: `${window.location.origin}`
+        returnTo: `http://localhost:8000`
       });
     });
   }

@@ -1,0 +1,49 @@
+:host {
+  display: block;
+  max-width: 960px;
+  margin: 25px auto;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+
+  border-bottom: 1px #f3f3f3 solid;
+
+  h2 a {
+    color: inherit;
+    text-decoration: none;
+
+    &:visited {
+      color: inherit;
+    }
+
+    &.active {
+      cursor: default;
+    }
+  }
+
+  .profile-buttons {
+    a {
+      cursor: pointer;
+      text-decoration: none;
+      margin: 15px;
+      border-radius: 3px;
+      border: 2px solid #353535;
+      padding: 8px 16px;
+
+
+      &:visited {
+        color: inherit;
+      }
+
+      &.active,
+      &:hover {
+        color: #fff;
+        background-color: #353535;
+      }
+    }
+  }
+}
