@@ -7,7 +7,8 @@
     <ul>
       <li><a routerLink="/about" routerLinkActive="active" href="#">About</a></li>
       <li><a routerLink="/" routerLinkActive="active" href="#">Omnifocus Themes</a></li>
-      <li class="link-button"><a routerLink="/login" href="">Log In</a></li>
+      <li *ngIf="loggedIn"><a routerLink="/profile" routerLinkActive="active" href="#">Profile</a></li>
+      <li *ngIf="!loggedIn" class="link-button"><a (click)="loginFn()">Log In</a></li>
     </ul>
   </nav>
 </div>

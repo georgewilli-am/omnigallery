@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthCallbackComponent } from './services/auth/auth-callback/auth-callback.component';
 
 const routes: Routes = [
   {
@@ -8,6 +9,10 @@ const routes: Routes = [
       import('./pages/theme-index/theme-index.module').then(
         m => m.ThemeIndexModule
       )
+  },
+  {
+    path: 'callback',
+    component: AuthCallbackComponent
   }
 ];
 
