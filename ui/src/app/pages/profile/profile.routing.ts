@@ -1,5 +1,6 @@
 import { RouterModule, Route } from '@angular/router';
 import { ProfileComponent } from './profile.component';
+import { UploadComponent } from './upload/upload.component';
 
 export const routes: Route[] = [
   {
@@ -7,7 +8,8 @@ export const routes: Route[] = [
     component: ProfileComponent,
     children: [
       {
-        path: ''
+        path: '',
+        component: UploadComponent
       },
       {
         path: 'settings'
