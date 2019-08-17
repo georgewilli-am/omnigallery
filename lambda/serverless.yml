@@ -1,0 +1,45 @@
+service: omnigallery
+app: omnigallery
+org: georgewilliam
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  region: us-west-2
+  stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:SendMessage"
+        - "sqs:GetQueueUrl"
+      Resource:
+        - "Fn::Join":
+            - ":"
+            - - "arn:aws:sqs"
+              - Ref: "AWS::Region"
+              - Ref: "AWS::AccountId"
+              - "omnigalleryFileQueue-${self:provider.stage}"
+
+functions:
+  uploader:
+    handler: new_theme.handler
+    events:
+      - http:
+          path: themes
+          method: put
+          authorizer:
+            name: auth
+            identitySource: method.request.header.Authorization
+            type: token
+  auth:
+    handler: authorizer/index.handler
+    environment:
+      JWKS_URI: https://dev-wgyfmwzr.auth0.com/.well-known/jwks.json
+      RESOURCE: ""
+
+resources:
+  Resources:
+    MyQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "omnigalleryFileQueue-${self:provider.stage}"

@@ -16,17 +16,22 @@ const verificationOptions = {
   "algorithms": "RS256"
 }
 
-const allow = {
-  "principalId": "user",
-  "policyDocument": {
-    "Version": "2012-10-17",
-    "Statement": [{
-      "Action": "execute-api:Invoke",
-      "Effect": "Allow",
-      "Resource": process.env.RESOURCE
-    }]
+const allow = (e) => {
+  return {
+    "principalId": "user",
+    "policyDocument": {
+      "Version": "2012-10-17",
+      "Statement": [{
+        "Action": "execute-api:Invoke",
+        "Effect": "Allow",
+        "Resource": e.methodArn
+      }]
+    },
+    "context": {
+      "user": "",
+    }
   }
-}
+};
 
 function getSigningKey(header = decoded.header, callback) {
   keyClient.getSigningKey(header.kid, function (err, key) {
@@ -43,17 +48,19 @@ function extractTokenFromHeader(e) {
   }
 }
 
-function validateToken(token, callback) {
-  jwt.verify(token, getSigningKey, verificationOptions, function (error) {
+function validateToken(token, callback, event) {
+  jwt.verify(token, getSigningKey, verificationOptions, function (error, decoded) {
     if (error) {
-      callback("Unauthorized")
+      callback("Unauthorized");
     } else {
-      callback(null, "Authorized")
+      var response = allow(event);
+      response.context.user = decoded.sub;
+      callback(null, response);
     }
-  })
+  });
 }
 
 exports.handler = (event, context, callback) => {
   let token = extractTokenFromHeader(event) || '';
-  validateToken(token, callback);
-}
+  validateToken(token, callback, event);
+};
