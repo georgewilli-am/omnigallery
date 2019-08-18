@@ -14,27 +14,32 @@ import {
 })
 export class UploadComponent implements OnInit {
   constructor(private uploadService: UploadService) {}
-
-  public files: NgxFileDropEntry[] = [];
+  public imagePreviews = [];
+  private images: NgxFileDropEntry[] = [];
 
   ngOnInit() {}
 
-  public dropped(files: NgxFileDropEntry[]) {
-    this.files = files;
-    for (const droppedFile of files) {
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-          // Here you can access the real file
-          console.log(droppedFile.relativePath, file);
-        });
-      } else {
-        // It was a directory (empty directories are added, otherwise only files)
-        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
-      }
+  public uploadImages(files: NgxFileDropEntry[]) {
+    this.images = files.slice(0, 3);
+
+    for (const image of this.images) {
+      const imageEntry = image.fileEntry as FileSystemFileEntry;
+      const reader = new FileReader();
+
+      imageEntry.file(file => {
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          this.imagePreviews[this.imagePreviews.length] = reader.result;
+          this.imagePreviews = this.imagePreviews.splice(0, 3);
+        };
+      });
     }
+  }
+
+  public deleteImage(index) {
+    console.log(index);
+    this.images.splice(index, 1);
+    this.imagePreviews.splice(index, 1);
   }
 
   public fileOver(event) {

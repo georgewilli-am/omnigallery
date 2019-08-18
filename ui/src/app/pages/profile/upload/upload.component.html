@@ -1,4 +1,23 @@
 <h3>Upload New Theme</h3>
-<ngx-file-drop multiple="false" dropZoneClassName="ng-uploader__dropzone" (onFileDrop)="dropped($event)"
-  (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)">
-</ngx-file-drop>
+<form>
+  <input class="form_input--title" placeholder="Your Theme Title..." type="text">
+  <div class="l-form">
+    <div class="l-form-1-2">
+      <textarea class="form_input--textarea" placeholder="Your Description Here..." name="description"></textarea>
+      <div class="l-form__images">
+        <ng-container *ngFor="let image of imagePreviews; index as i">
+          <img src="{{image}}" (click)="deleteImage(i)" alt="">
+        </ng-container>
+        <ngx-file-drop *ngIf="!(imagePreviews.length >= 3)" (onFileDrop)="uploadImages($event)">
+          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+            <button type="button" (click)="openFileSelector()">+ Add Image</button>
+          </ng-template>
+        </ngx-file-drop>
+      </div>
+    </div>
+    <div class="l-form-1-2">
+      <ngx-file-drop>
+      </ngx-file-drop>
+    </div>
+  </div>
+</form>
