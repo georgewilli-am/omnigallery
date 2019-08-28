@@ -31,5 +31,5 @@ const configFn = (inputFile, outputFile) => {
 
 
 export default [
-  configFn('./src/*.ts', './dist/authorizer.js'),
+  configFn('./src/authorizer.ts', './dist/authorizer.js'),
 ]

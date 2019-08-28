@@ -2,6 +2,12 @@ service: omnigallery
 app: omnigallery
 org: georgewilliam
 
+
+package:
+  individually: true
+  exclude:
+    - ./**
+
 provider:
   name: aws
   runtime: nodejs10.x
@@ -23,18 +29,21 @@ provider:
         - "Fn::GetAtt": [ NotesTable, Arn ]
 
 functions:
-  uploader:
-    handler: new_theme.handler
-    events:
-      - http:
-          path: themes
-          method: put
-          authorizer:
-            name: auth
-            identitySource: method.request.header.Authorization
-            type: token
+  # uploader:
+  #   handler: new_theme.handler
+  #   events:
+  #     - http:
+  #         path: themes
+  #         method: put
+  #         authorizer:
+  #           name: auth
+  #           identitySource: method.request.header.Authorization
+  #           type: token
   auth:
-    handler: authorizer/index.handler
+    handler: dist/authorizer.handler
+    package:
+      include:
+        - dist/authorizer.js
     environment:
       JWKS_URI: https://dev-wgyfmwzr.auth0.com/.well-known/jwks.json
       RESOURCE: ""
