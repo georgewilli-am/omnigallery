@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const jwksClient = require('jwks-rsa');
+import { verify, VerifyOptions } from 'jsonwebtoken';
+import jwksClient from 'jwks-rsa';
 
 const keyClient = jwksClient({
   cache: true,
@@ -7,16 +7,16 @@ const keyClient = jwksClient({
   rateLimit: true,
   jwksRequestsPerMinute: 10,
   strictSsl: true,
-  jwksUri: process.env.JWKS_URI
+  jwksUri: process.env.JWKS_URI || ''
 })
 
-const verificationOptions = {
+const verificationOptions: VerifyOptions = {
   // verify claims, e.g.
   // "audience": "urn:audience"
-  "algorithms": "RS256"
+  "algorithms": ["RS256"]
 }
 
-const allow = (e) => {
+const allow = (e: any) => {
   return {
     "principalId": "user",
     "policyDocument": {
@@ -33,14 +33,16 @@ const allow = (e) => {
   }
 };
 
-function getSigningKey(header = decoded.header, callback) {
-  keyClient.getSigningKey(header.kid, function (err, key) {
+function getSigningKey(header:any, callback: any) {
+  keyClient.getSigningKey(header.kid, function (err:any, key:any) {
+    if (err) console.error(err)
+
     const signingKey = key.publicKey || key.rsaPublicKey;
     callback(null, signingKey);
   })
 }
 
-function extractTokenFromHeader(e) {
+function extractTokenFromHeader(e:any) {
   if (e.authorizationToken && e.authorizationToken.split(' ')[0] === 'Bearer') {
     return e.authorizationToken.split(' ')[1];
   } else {
@@ -48,19 +50,19 @@ function extractTokenFromHeader(e) {
   }
 }
 
-function validateToken(token, callback, event) {
-  jwt.verify(token, getSigningKey, verificationOptions, function (error, decoded) {
+function validateToken(token: any, callback: any, event: any) {
+  verify(token, getSigningKey, verificationOptions, function (error, decoded) {
     if (error) {
       callback("Unauthorized");
     } else {
       var response = allow(event);
-      response.context.user = decoded.sub;
+      response.context.user = decoded.toString();
       callback(null, response);
     }
   });
 }
 
-exports.handler = (event, context, callback) => {
+exports.handler = (event: any, _context: any, callback: any) => {
   let token = extractTokenFromHeader(event) || '';
   validateToken(token, callback, event);
 };
