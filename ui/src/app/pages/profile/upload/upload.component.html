@@ -4,16 +4,6 @@
   <div class="l-form">
     <div class="l-form-1-2">
       <textarea class="form_input--textarea" placeholder="Your Description Here..." name="description"></textarea>
-      <div class="l-form__images">
-        <ng-container *ngFor="let image of imagePreviews; index as i">
-          <img src="{{image}}" (click)="deleteImage(i)" alt="">
-        </ng-container>
-        <ngx-file-drop *ngIf="!(imagePreviews.length >= 3)" (onFileDrop)="uploadImages($event)">
-          <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-            <button type="button" (click)="openFileSelector()">+ Add Image</button>
-          </ng-template>
-        </ngx-file-drop>
-      </div>
     </div>
     <div class="l-form-1-2">
       <ngx-file-drop>
