@@ -1,13 +1,14 @@
 <h3>Upload New Theme</h3>
-<form>
-  <input class="form_input--title" placeholder="Your Theme Title..." type="text">
+<form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+  <input class="form_input--title" placeholder="Your Theme Title..." type="text" formControlName="title" required>
   <div class="l-form">
     <div class="l-form-1-2">
-      <textarea class="form_input--textarea" placeholder="Your Description Here..." name="description"></textarea>
+      <textarea class="form_input--textarea" placeholder="Your Description Here..." name="description" formControlName="description" required></textarea>
     </div>
     <div class="l-form-1-2">
-      <ngx-file-drop>
+      <ngx-file-drop [showBrowseBtn]="true" accept="ofstyle" multiple="false" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" >
       </ngx-file-drop>
     </div>
   </div>
+  <button type="submit" [disabled]="!uploadForm.valid">Submit</button>
 </form>
