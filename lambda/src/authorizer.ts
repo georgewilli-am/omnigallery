@@ -1,4 +1,4 @@
-import { verify, VerifyOptions } from 'jsonwebtoken';
+import { verify, VerifyOptions, decode } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 
 const keyClient = jwksClient({
@@ -50,13 +50,13 @@ function extractTokenFromHeader(e:any) {
   }
 }
 
-function validateToken(token: any, callback: any, event: any) {
-  verify(token, getSigningKey, verificationOptions, function (error, decoded) {
+function validateToken(token: any, callback: any, event: any) {;
+  verify(token, getSigningKey, verificationOptions, function (error, decoded: any) {
     if (error) {
       callback("Unauthorized");
     } else {
       var response = allow(event);
-      response.context.user = decoded.toString();
+      response.principalId = decoded.sub;
       callback(null, response);
     }
   });
