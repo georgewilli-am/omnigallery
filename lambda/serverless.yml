@@ -3,10 +3,10 @@ app: omnigallery
 org: georgewilliam
 
 
-package:
-  individually: true
-  exclude:
-    - ./**
+# package:
+#   individually: true
+#   exclude:
+#     - ./**
 
 provider:
   name: aws
@@ -29,21 +29,27 @@ provider:
         - "Fn::GetAtt": [ NotesTable, Arn ]
 
 functions:
-  # uploader:
-  #   handler: new_theme.handler
-  #   events:
-  #     - http:
-  #         path: themes
-  #         method: put
-  #         authorizer:
-  #           name: auth
-  #           identitySource: method.request.header.Authorization
-  #           type: token
+  uploader:
+    handler: dist/put_theme.handler
+    environment:
+      TABLE_NAME: OmniGallery-Themes-${self:provider.stage}
+    # package:
+    #   include:
+    #     - dist/put_theme.js
+    events:
+      - http:
+          path: themes
+          method: put
+          authorizer:
+            name: auth
+            identitySource: method.request.header.Authorization
+            type: token
   auth:
     handler: dist/authorizer.handler
-    package:
-      include:
-        - dist/authorizer.js
+    # package:
+    #   include:
+    #     - dist/authorizer.js
+    #     - node_modules/**/*
     environment:
       JWKS_URI: https://dev-wgyfmwzr.auth0.com/.well-known/jwks.json
       RESOURCE: ""

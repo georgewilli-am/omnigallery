@@ -17,9 +17,9 @@ const configFn = (inputFile, outputFile) => {
       }),
       commonjs(),
       babel({ extensions, include: ['src/**/*'] }),
-      terser({}),
+      // terser({}),
     ],
-
+    external: ['aws-sdk'],
     input: inputFile,
     output: {
       file: outputFile,
@@ -29,7 +29,7 @@ const configFn = (inputFile, outputFile) => {
 }
 
 
-
 export default [
   configFn('./src/authorizer.ts', './dist/authorizer.js'),
+  configFn('./src/put_theme.ts', './dist/put_theme.js'),
 ]
